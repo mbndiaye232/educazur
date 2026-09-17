@@ -81,7 +81,8 @@
   }
 
   /* --- Visionneuse de la galerie ---------------------------------------- */
-  var items = Array.prototype.slice.call(document.querySelectorAll('.gallery__item'));
+  var items = Array.prototype.slice.call(
+    document.querySelectorAll('.gallery__item, .doccard'));
 
   if (items.length) {
     var box = document.createElement('div');
@@ -105,7 +106,8 @@
       current = (i + items.length) % items.length;
       var src = items[current].querySelector('img');
       var text = items[current].querySelector('figcaption');
-      bigImg.src = src.currentSrc || src.src;
+      // data-full pointe la version pleine résolution quand la vignette est réduite
+      bigImg.src = src.dataset.full || src.currentSrc || src.src;
       bigImg.alt = src.alt || '';
       cap.textContent = text ? text.textContent.trim() : '';
     };
@@ -167,7 +169,7 @@
 
       if (!key || !key.value || key.value.indexOf('VOTRE_CLE') === 0) {
         say('Le formulaire n’est pas encore relié à sa boîte de réception. '
-          + 'En attendant, appelez le 33 834 77 80 — nous répondons directement.', false);
+          + 'En attendant, appelez le 77 657 42 31 — nous répondons directement.', false);
         return;
       }
 
@@ -184,11 +186,11 @@
             form.reset();
             say('Merci, votre demande est bien arrivée. Le secrétariat vous rappelle sous 48 heures ouvrées.', true);
           } else {
-            say('L’envoi a échoué. Merci d’appeler le 33 834 77 80.', false);
+            say('L’envoi a échoué. Merci d’appeler le 77 657 42 31.', false);
           }
         })
         .catch(function () {
-          say('Connexion impossible. Vérifiez votre réseau ou appelez le 33 834 77 80.', false);
+          say('Connexion impossible. Vérifiez votre réseau ou appelez le 77 657 42 31.', false);
         })
         .then(function () {
           if (submit) { submit.disabled = false; submit.textContent = submitLabel; }

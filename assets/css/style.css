@@ -352,7 +352,9 @@ p:last-child { margin-bottom: 0; }
 .burger[aria-expanded="true"] span::before { top: 0; transform: rotate(45deg); }
 .burger[aria-expanded="true"] span::after  { top: 0; transform: rotate(-45deg); }
 
-@media (max-width: 960px) {
+/* 1060px : le menu passe en burger avant que ses six entrées ne se replient
+   sur deux lignes, ce qui arrive vers 1010px */
+@media (max-width: 1060px) {
   .burger { display: inline-flex; }
 
   .nav {
@@ -981,6 +983,99 @@ tr.is-perfect .rate__val { color: #0b8a4b; }
 .lightbox__next { right: clamp(.5rem, 2vw, 2rem); top: 50%; transform: translateY(-50%); }
 
 body.no-scroll { overflow: hidden; }
+
+/* --- Médiathèque : lecteurs vidéo --------------------------------------- */
+.videos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  gap: clamp(1.15rem, 2.2vw, 1.75rem);
+}
+
+.videocard {
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: box-shadow .25s ease, border-color .25s ease;
+}
+
+.videocard:hover { box-shadow: var(--shadow-md); border-color: var(--blue-100); }
+
+.videocard video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #06152f;
+  object-fit: cover;
+}
+
+.videocard__body {
+  padding: clamp(1.1rem, 2vw, 1.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+  flex: 1;
+}
+
+.videocard__body h3 { font-size: 1.16rem; margin: 0; }
+.videocard__body p { font-size: .93rem; color: var(--ink-600); margin: 0; }
+
+.videocard__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+  margin-top: auto;
+  padding-top: .55rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: .32rem;
+  padding: .22rem .6rem;
+  border-radius: 999px;
+  background: var(--blue-50);
+  border: 1px solid var(--blue-100);
+  font-size: .74rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--blue);
+  white-space: nowrap;
+}
+
+.tag--mute { background: var(--sand); border-color: var(--sand-200); color: var(--ink-600); }
+.tag svg { width: 13px; height: 13px; }
+
+/* --- Médiathèque : documents ------------------------------------------- */
+.docs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: clamp(1.15rem, 2.2vw, 1.75rem);
+  justify-content: center;
+}
+
+.doccard {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+  overflow: hidden;
+  cursor: zoom-in;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.doccard:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.doccard img { width: 100%; display: block; }
+
+.doccard figcaption {
+  padding: .9rem 1.1rem;
+  font-size: .88rem;
+  font-weight: 500;
+  color: var(--navy);
+  border-top: 1px solid var(--line);
+}
 
 /* --- Frise chronologique ------------------------------------------------ */
 .timeline { position: relative; margin: 0; padding: 0 0 0 2.4rem; list-style: none; }

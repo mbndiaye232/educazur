@@ -10,3 +10,10 @@ desktop.ini
 # LUT regenerables par tools/make_lut.py (1 Mo chacune)
 tools/lut/
 *.cube
+
+# Secrets de developpement local
+.dev.vars
+
+# Etat local de Wrangler (base D1 locale, cache)
+.wrangler/
+node_modules/

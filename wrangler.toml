@@ -1,0 +1,15 @@
+name = "educazur"
+compatibility_date = "2026-09-01"
+pages_build_output_dir = "."
+
+# Base des demandes d'inscription.
+# Remplacer database_id par celui renvoyé par :
+#   npx wrangler d1 create educazur-demandes
+[[d1_databases]]
+binding = "DB"
+database_name = "educazur-demandes"
+database_id = "A_REMPLACER"
+
+# ADMIN_USER, ADMIN_PASSWORD et IP_SALT ne figurent pas ici : ce sont des
+# secrets, à définir dans le tableau de bord Cloudflare Pages
+# (Settings > Variables and Secrets) ou avec `wrangler pages secret put`.

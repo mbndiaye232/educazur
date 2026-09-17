@@ -1,0 +1,8 @@
+# Sources vidéo : trop volumineuses pour Git, conservées en local
+docs/videos/
+docs/TRAVAUX/
+
+# Système
+Thumbs.db
+desktop.ini
+.DS_Store

@@ -37,8 +37,16 @@ Connecter le dépôt GitHub `mbndiaye232/educazur`, puis :
 | Root directory | *(laisser vide)* |
 
 Chaque `git push` sur `main` déclenche un nouveau déploiement.
-`_headers` définit le cache (1 an sur `/assets/*`, revalidation sur les `.html`) et
-quelques en-têtes de sécurité.
+`_headers` définit le cache et quelques en-têtes de sécurité : les pages `.html`
+sont revalidées à chaque visite, le CSS et le JS toutes les 5 minutes, les images
+et les vidéos une fois par jour.
+
+**Ne pas remettre de cache « immutable »** : aucun nom de fichier ne contient
+d'empreinte de contenu, un fichier modifié garderait donc sa version périmée chez
+les visiteurs pendant toute la durée du cache. C'est arrivé : `main.js` et
+`style.css` ont été servis un temps avec un cache d'un an. Les pages les appellent
+désormais par `style.css?v=2` et `main.js?v=2`, une adresse nouvelle qui échappe à
+ces copies périmées — **ne pas retirer ce `?v=2`**.
 
 ### Après la mise en ligne
 

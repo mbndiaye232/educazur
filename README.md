@@ -1,6 +1,7 @@
 # Site web — Groupe Scolaire Educazur
 
-Site vitrine statique du Groupe Scolaire Educazur (Km 16, Nationale 1 — Pikine, Dakar).
+Site vitrine statique du Groupe Scolaire Educazur (Km 16, Nationale 1 — Diamaguène SICAP Mbao, Dakar),
+en ligne sur <https://educazur.net>.
 Aucun framework, aucune étape de build : ce sont des fichiers HTML, CSS et JS servis tels quels.
 
 ## Pages
@@ -23,7 +24,8 @@ Aucun framework, aucune étape de build : ce sont des fichiers HTML, CSS et JS s
 | Mobiles | 77 657 42 31 · 76 699 47 94 |
 | Fixe | 33 834 77 80 |
 | E-mail | gs.educazur@yahoo.fr |
-| Adresse | Km 16, Route de Rufisque (Nationale 1) — Pikine, Dakar |
+| Adresse | Km 16, Route de Rufisque (Nationale 1) — Diamaguène SICAP Mbao, Dakar |
+| Site | <https://educazur.net> |
 
 ## Déploiement sur Cloudflare Pages
 
@@ -48,13 +50,16 @@ les visiteurs pendant toute la durée du cache. C'est arrivé : `main.js` et
 désormais par `style.css?v=2` et `main.js?v=2`, une adresse nouvelle qui échappe à
 ces copies périmées — **ne pas retirer ce `?v=2`**.
 
-### Après la mise en ligne
+### Domaine
 
-Remplacer `https://educazur.pages.dev` par le domaine définitif dans :
+Le site est servi sur **<https://educazur.net>**, rattaché au projet Pages ;
+`educazur.pages.dev` continue de répondre. Les balises `canonical` et `og:*`,
+les données structurées, `sitemap.xml` et `robots.txt` déclarent
+`https://educazur.net`. En cas de changement de domaine, les mettre à jour
+ensemble.
 
-- les balises `<link rel="canonical">` et `og:*` de chaque page ;
-- `sitemap.xml` ;
-- `robots.txt`.
+`www.educazur.net` ne répond pas : il faut l'ajouter comme domaine personnalisé
+du projet Pages, ou le rediriger vers `educazur.net`.
 
 ## Formulaire d'inscription
 
@@ -102,7 +107,7 @@ Tableau de bord Cloudflare → le projet → *Settings* → *Bindings* → *Add*
 
 **4. Consulter les demandes**
 
-<https://educazur.pages.dev/admin/demandes> — le navigateur demande
+<https://educazur.net/admin/demandes> — le navigateur demande
 l'identifiant et le mot de passe. Filtre « À traiter » par défaut, bouton
 « Marquer traitée » sur chaque ligne.
 
@@ -138,11 +143,10 @@ IP_SALT=une-chaine-aleatoire
 
 ### Si vous voulez une notification par e-mail
 
-Ce n'est pas possible aujourd'hui sans réintroduire un tiers : l'envoi d'e-mail
-depuis Cloudflare exige un **domaine d'expédition vérifié**, ce qu'un
-sous-domaine `pages.dev` ne permet pas, et l'offre gratuite de MailChannels pour
-Workers s'est arrêtée en août 2024. Dès que l'école disposera de son propre
-domaine, la notification pourra être ajoutée à `functions/api/inscription.js`.
+L'envoi d'e-mail depuis Cloudflare exige un **domaine d'expédition vérifié** (l'offre
+gratuite de MailChannels pour Workers s'est arrêtée en août 2024). Avec
+`educazur.net`, cette condition peut désormais être remplie : la notification
+pourra être ajoutée à `functions/api/inscription.js` sans passer par un tiers.
 
 ## Carte
 

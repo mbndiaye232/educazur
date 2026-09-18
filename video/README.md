@@ -15,6 +15,23 @@ npm run render                 # out/educazur-publi-reportage.mp4
 
 `npm run studio` ouvre l'aperçu interactif de Remotion.
 
+### Version publiée sur le site
+
+Le rendu (`out/educazur-publi-reportage.mp4`, 1080p, 68 Mo) dépasse la limite de
+25 Mo par fichier de Cloudflare Pages. Le site utilise une version 720p :
+
+```bash
+ffmpeg -i out/educazur-publi-reportage.mp4   -vf "scale=1280:720:flags=lanczos:in_range=full:out_range=tv,format=yuv420p"   -colorspace bt709 -color_primaries bt709 -color_trc bt709 -color_range tv   -c:v libx264 -preset slow -crf 24 -maxrate 900k -bufsize 1800k   -af "loudnorm=I=-16:TP=-1.5:LRA=11" -c:a aac -b:a 128k -movflags +faststart   ../assets/video/publi-reportage.mp4
+ffmpeg -ss 3.2 -i out/educazur-publi-reportage.mp4 -frames:v 1   -vf "scale=1280:720" -q:v 3 ../assets/img/video-publi-reportage.jpg
+```
+
+Résultat : 14 Mo, son à -16 LUFS. Elle est présentée sur l'accueil (section
+« Le nouveau visage d'Educazur », juste après l'annonce d'inscription) et en tête
+des vidéos de la médiathèque.
+
+**En cas de nouveau rendu, changer le nom du fichier** (`publi-reportage-v2.mp4`
+par exemple) : les vidéos sont mises en cache un jour chez les visiteurs.
+
 Prérequis : Node 18+, Python avec `pip install edge-tts`, ffmpeg dans le PATH
 (ou `FFMPEG=...`).
 
@@ -39,6 +56,9 @@ apparaissent pendant la phrase qui les cite, chaque phrase est sous-titrée.
   classe, ces deux plans viennent des photos du site (`assets/img/`).
 - **Polices** : Newsreader et Inter, embarquées via `@fontsource` (le rendu ne
   dépend pas de Google Fonts).
+- **Écran final** : coordonnées avec les libellés fournis par l'école (site web,
+  e-mail, mobiles, fixe) et adresse à Diamaguène SICAP Mbao ; il reste affiché
+  7 s après la dernière phrase, le temps de noter un numéro.
 
 ## Licence de la voix
 

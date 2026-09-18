@@ -25,7 +25,7 @@ FPS = 30
 PAUSE_LIGNE = 0.45       # silence entre deux phrases (s)
 PAUSE_SECTION = 1.0      # silence entre deux séquences (s)
 INTRO = 1.6              # logo seul avant la première phrase (s)
-FIN = 4.0                # écran final après la dernière phrase (s)
+FIN = 7.0                # écran final après la dernière phrase : le temps de lire les coordonnées (s)
 
 VIDEO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT = os.path.dirname(VIDEO)

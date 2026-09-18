@@ -24,3 +24,8 @@ __pycache__/
 
 # Videos sources du 18/09/2026 (montees par tools/encode_videos.sh)
 docs/nouveau/*.mp4
+
+# Video Remotion : dependances, medias generes par scripts/prepare.py, rendus
+video/node_modules/
+video/public/
+video/out/

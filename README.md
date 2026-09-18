@@ -279,6 +279,7 @@ remplacer.
 | `tools/make_lut.py` | génère la LUT 3D de resaturation des bleus |
 | `tools/encode_videos.sh` | corrige, monte et réencode les vidéos dans `build/video/` |
 | `tools/voix_off.py` | textes de la voix off, synthèse, mixage et sous-titres |
+| `video/` | vidéo du publi-reportage (Remotion) — voir `video/README.md` |
 
 Les LUT (`tools/lut/*.cube`, 1 Mo chacune) ne sont pas versionnées : elles se
 régénèrent avec `make_lut.py`.
@@ -307,6 +308,7 @@ Puis ouvrir <http://127.0.0.1:8788>.
 │   └── admin/demandes.js    page de consultation protégée
 ├── schema.sql               table D1 des demandes
 ├── wrangler.toml            liaison D1
+├── video/                   vidéo du publi-reportage (Remotion)
 ├── docs/                    sources : textes du reportage, images d'origine
 ├── _headers                 en-têtes Cloudflare Pages
 ├── favicon.ico

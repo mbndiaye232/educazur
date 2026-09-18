@@ -10,3 +10,7 @@ desktop.ini
 # LUT regenerables par tools/make_lut.py (1 Mo chacune)
 tools/lut/
 *.cube
+
+# Videos etalonnees sans voix : intermediaire de tools/voix_off.py
+build/
+__pycache__/

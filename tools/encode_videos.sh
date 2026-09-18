@@ -18,7 +18,7 @@ FF="${FFMPEG:-ffmpeg}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="$ROOT/docs/videos"
 LUT="$ROOT/tools/lut"
-OUT="$ROOT/assets/video"
+OUT="$ROOT/build/video"      # intermédiaire : tools/voix_off.py produit la version publiée
 POSTER="$ROOT/assets/img"
 
 mkdir -p "$OUT"

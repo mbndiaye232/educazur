@@ -4,8 +4,20 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
 
-/assets/*
-  Cache-Control: public, max-age=31536000, immutable
+# Aucun nom de fichier ne contient d'empreinte de contenu : rien ne doit être
+# « immutable ». Le CSS et le JS sont revalidés toutes les 5 minutes (réponse 304
+# si rien n'a changé), les images et les vidéos une fois par jour.
+/assets/css/*
+  Cache-Control: public, max-age=300, must-revalidate
+
+/assets/js/*
+  Cache-Control: public, max-age=300, must-revalidate
+
+/assets/img/*
+  Cache-Control: public, max-age=86400
+
+/assets/video/*
+  Cache-Control: public, max-age=86400
 
 /*.html
   Cache-Control: public, max-age=0, must-revalidate

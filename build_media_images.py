@@ -40,6 +40,11 @@ PHOTOS = [
     ("WhatsApp Image 2026-09-17 at 19.01.21 (4).jpeg", "salle-classe-tables",   False),
     ("WhatsApp Image 2026-09-17 at 19.01.22 (1).jpeg", "portail-entree",        True),
     ("WhatsApp Image 2026-09-17 at 19.01.22.jpeg",     "facade-route",          False),
+    # prises du 18/09/2026 (docs/nouveau) : couleurs conformes, pas de recalage
+    ("../../nouveau/WhatsApp Image 2026-09-18 at 10.32.17.jpeg",     "salle-informatique", False),
+    ("../../nouveau/WhatsApp Image 2026-09-18 at 10.34.23.jpeg",     "bibliotheque",       False),
+    ("../../nouveau/WhatsApp Image 2026-09-18 at 10.32.17 (1).jpeg", "infirmerie-lits",    False),
+    ("../../nouveau/WhatsApp Image 2026-09-18 at 10.32.17 (2).jpeg", "infirmerie-examen",  False),
 ]
 
 

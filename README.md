@@ -11,7 +11,7 @@ Aucun framework, aucune étape de build : ce sont des fichiers HTML, CSS et JS s
 | `notre-ecole.html` | Histoire, projet du GIE Vision Azur, les trois objectifs, transformations |
 | `resultats.html` | BAC 2026 par série, mentions, distinction, BFEM, taux de passage |
 | `cadre-de-vie.html` | Salles, couloirs, numérique, bibliothèque, infirmerie, cour |
-| `mediatheque.html` | Photos, six séquences vidéo, affiches et résultats officiels |
+| `mediatheque.html` | Photos, neuf séquences vidéo commentées, affiches et résultats officiels |
 | `inscriptions.html` | Modalités, formulaire de demande, coordonnées et accès |
 | `404.html` | Page d'erreur |
 | `/admin/demandes` | Consultation des demandes d'inscription (mot de passe) |
@@ -144,6 +144,15 @@ sous-domaine `pages.dev` ne permet pas, et l'offre gratuite de MailChannels pour
 Workers s'est arrêtée en août 2024. Dès que l'école disposera de son propre
 domaine, la notification pourra être ajoutée à `functions/api/inscription.js`.
 
+## Carte
+
+La page d'inscription affiche une carte **OpenStreetMap** centrée sur le repère
+exact de l'école (14.7466396, −17.3583659, relevé sur sa fiche Google Maps).
+OpenStreetMap plutôt que Google Maps : l'intégration ne dépose pas de cookie de
+suivi chez le visiteur. Le bouton « Ouvrir l'itinéraire » lance Google Maps avec
+ces coordonnées pour destination ; les mêmes coordonnées figurent dans les
+données structurées de l'accueil.
+
 ## Images
 
 Deux jeux d'images, produits par deux scripts distincts.
@@ -160,8 +169,8 @@ Produites par `build_images.py` depuis des images extraites de `docs/videos/`
 (848 × 480), agrandies au Lanczos avec accentuation. Rendu correct mais en dessous
 d'une vraie photo : ces images servent les héros et les pages éditoriales.
 
-Manquent encore : la **salle informatique** et la **bibliothèque**, absentes des
-sources. Leurs sections existent en texte, sans photo.
+Les photos de la salle informatique, de la bibliothèque et de l'infirmerie
+(`docs/nouveau/`, prises le 18/09/2026) passent par le même script.
 
 ## Correction du bleu
 
@@ -199,19 +208,31 @@ photos sont dans ±11° de la référence et ne sont pas retouchées.
 
 ## Vidéos
 
-`assets/video/` contient les six séquences **commentées** (`*-commentee.mp4`) et
-leurs sous-titres (`*-commentee.fr.vtt`), pour 48 Mo au total — le plus gros
+`assets/video/` contient les neuf séquences **commentées** (`*-commentee.mp4`) et
+leurs sous-titres (`*-commentee.fr.vtt`), pour 51 Mo au total — le plus gros
 fichier fait 15,3 Mo, sous la limite de 25 Mo par fichier de Cloudflare Pages.
 
 Chaîne de production :
 
 ```
-docs/videos/*.mp4 ──encode_videos.sh──▶ build/video/*.mp4 ──voix_off.py──▶ assets/video/*-commentee.mp4
-   (sources)         LUT + H.264          (étalonnées, sans voix)    voix + sous-titres
+docs/videos/*.mp4  ──encode_videos.sh──▶ build/video/*.mp4 ──voix_off.py──▶ assets/video/*-commentee.mp4
+docs/nouveau/*.mp4    LUT, coupes, H.264     (sans voix)            voix + sous-titres
 ```
 
-`build/` n'est pas versionné. L'image est copiée sans réencodage à la dernière
-étape : même nombre d'images que la vidéo étalonnée, vérifié pour les six.
+Les sources vidéo et `build/` ne sont pas versionnés. L'image est copiée sans
+réencodage à la dernière étape : même nombre d'images que la vidéo montée,
+vérifié pour les neuf.
+
+**Prises du 18/09/2026** (salle informatique, infirmerie, bibliothèque) : filmées
+au téléphone, elles sont montées par la fonction `monte` d'`encode_videos.sh`,
+qui retire les passages ratés — la caméra qui plonge vers le sol dans la salle
+informatique (7 à 11 s), un panoramique flou dans l'infirmerie (17,3 à 18,9 s).
+
+Les murs intérieurs sont peints d'un **bleu-gris pâle réel**, confirmé par les
+photos prises dans les mêmes pièces : ils ne sont pas ramenés au bleu de l'affiche.
+Chaque vidéo est comparée à la photo de sa propre pièce. Seule la bibliothèque
+sortait plus terne que sa photo (saturation 0,39 contre 0,49) : gain de 1,25.
+Salle informatique et infirmerie concordaient déjà, elles ne sont pas corrigées.
 
 `docs/videos/TRAVAUX/Project 1.mp4` n'est pas exploitable : son canal bleu est
 corrompu (moyenne 242/255, toute l'image vire au violet).
@@ -222,7 +243,7 @@ corrompu (moyenne 242/255, toute l'image vire au violet).
 montre chaque vidéo, et produit les versions commentées :
 
 ```bash
-python tools/voix_off.py              # les six vidéos
+python tools/voix_off.py              # toutes les vidéos
 python tools/voix_off.py couloirs     # une seule
 ```
 
@@ -246,7 +267,7 @@ Le script utilise `edge-tts`, qui passe par le service de lecture à voix haute
 du navigateur Edge. Ce n'est **pas une API sous licence** : pour une vidéo
 promotionnelle publiée, il faut générer l'audio via **Azure AI Speech**, qui
 propose la même voix sous licence commerciale. Le volume est minime —
-6 715 caractères pour les six vidéos. Seule la fonction `synthese()` est à
+7 354 caractères pour les neuf vidéos. Seule la fonction `synthese()` est à
 remplacer.
 
 ## Outils
@@ -256,7 +277,7 @@ remplacer.
 | `build_media_images.py` | photos de la médiathèque depuis `docs/images/new/` |
 | `build_images.py` | images éditoriales depuis les captures vidéo |
 | `tools/make_lut.py` | génère la LUT 3D de resaturation des bleus |
-| `tools/encode_videos.sh` | applique la LUT et réencode les six vidéos dans `build/video/` |
+| `tools/encode_videos.sh` | corrige, monte et réencode les vidéos dans `build/video/` |
 | `tools/voix_off.py` | textes de la voix off, synthèse, mixage et sous-titres |
 
 Les LUT (`tools/lut/*.cube`, 1 Mo chacune) ne sont pas versionnées : elles se
@@ -280,7 +301,7 @@ Puis ouvrir <http://127.0.0.1:8788>.
 │   ├── css/style.css        feuille de style unique
 │   ├── js/main.js           menu, apparitions, visionneuse, formulaire
 │   ├── img/                 photos, logo, affiches
-│   └── video/               six séquences commentées + sous-titres
+│   └── video/               neuf séquences commentées + sous-titres
 ├── functions/
 │   ├── api/inscription.js   réception et enregistrement des demandes
 │   └── admin/demandes.js    page de consultation protégée

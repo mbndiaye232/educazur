@@ -21,3 +21,6 @@ node_modules/
 # Videos etalonnees sans voix : intermediaire de tools/voix_off.py
 build/
 __pycache__/
+
+# Videos sources du 18/09/2026 (montees par tools/encode_videos.sh)
+docs/nouveau/*.mp4

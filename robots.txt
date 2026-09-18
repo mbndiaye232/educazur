@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 
-Sitemap: https://educazur.pages.dev/sitemap.xml
+Sitemap: https://educazur.net/sitemap.xml

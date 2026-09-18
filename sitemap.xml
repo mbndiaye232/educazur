@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://educazur.pages.dev/</loc>
+    <loc>https://educazur.net/</loc>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://educazur.pages.dev/notre-ecole.html</loc>
+    <loc>https://educazur.net/notre-ecole.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://educazur.pages.dev/resultats.html</loc>
+    <loc>https://educazur.net/resultats.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://educazur.pages.dev/cadre-de-vie.html</loc>
+    <loc>https://educazur.net/cadre-de-vie.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://educazur.pages.dev/mediatheque.html</loc>
+    <loc>https://educazur.net/mediatheque.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://educazur.pages.dev/inscriptions.html</loc>
+    <loc>https://educazur.net/inscriptions.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>

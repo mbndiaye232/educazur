@@ -191,16 +191,55 @@ photos sont dans ±11° de la référence et ne sont pas retouchées.
 
 ## Vidéos
 
-`assets/video/` contient six séquences réencodées en H.264 (848 × 480, CRF 26,
-débit plafonné à 560 kb/s, `faststart`), pour 43 Mo au total — le plus gros
-fichier fait 13,7 Mo, sous la limite de 25 Mo par fichier de Cloudflare Pages.
+`assets/video/` contient les six séquences **commentées** (`*-commentee.mp4`) et
+leurs sous-titres (`*-commentee.fr.vtt`), pour 48 Mo au total — le plus gros
+fichier fait 15,3 Mo, sous la limite de 25 Mo par fichier de Cloudflare Pages.
 
-Les trois séquences longues (3 min 28) sont **muettes à la source** (−91 dB
-mesuré) : leur piste audio a été retirée et la médiathèque l'indique. Les trois
-séquences courtes conservent leur son d'origine.
+Chaîne de production :
+
+```
+docs/videos/*.mp4 ──encode_videos.sh──▶ build/video/*.mp4 ──voix_off.py──▶ assets/video/*-commentee.mp4
+   (sources)         LUT + H.264          (étalonnées, sans voix)    voix + sous-titres
+```
+
+`build/` n'est pas versionné. L'image est copiée sans réencodage à la dernière
+étape : même nombre d'images que la vidéo étalonnée, vérifié pour les six.
 
 `docs/videos/TRAVAUX/Project 1.mp4` n'est pas exploitable : son canal bleu est
 corrompu (moyenne 242/255, toute l'image vire au violet).
+
+## Voix off
+
+`tools/voix_off.py` contient les textes, calés seconde par seconde sur ce que
+montre chaque vidéo, et produit les versions commentées :
+
+```bash
+python tools/voix_off.py              # les six vidéos
+python tools/voix_off.py couloirs     # une seule
+```
+
+- **Voix** : `fr-FR-VivienneMultilingualNeural`, voix féminine neuronale.
+- **Calage** : chaque segment a une seconde de départ ; le script refuse de
+  produire une vidéo si un segment déborde sur le suivant.
+- **Mixage** : la voix est normalisée à −16 LUFS ; sur les trois séquences
+  courtes, le son d'origine reste audible en fond (22 %).
+- **Sous-titres** : générés depuis les mêmes textes, en forme écrite (« BFEM »,
+  « 2026-2027 », « 77 657 42 31 ») alors que la voix lit la forme parlée.
+- **Contenu** : uniquement des faits établis — `docs/presentation*.txt` et les
+  affiches de résultats du BAC 2026 filmées à l'entrée.
+
+La prononciation a été contrôlée en faisant retranscrire l'audio par un modèle
+de reconnaissance vocale. Un défaut a été corrigé ainsi : écrit « B.F.E.M. »
+avec des points, le sigle perdait son E ; il est écrit « B F E M ».
+
+### Licence de la voix — à régler avant une diffusion commerciale
+
+Le script utilise `edge-tts`, qui passe par le service de lecture à voix haute
+du navigateur Edge. Ce n'est **pas une API sous licence** : pour une vidéo
+promotionnelle publiée, il faut générer l'audio via **Azure AI Speech**, qui
+propose la même voix sous licence commerciale. Le volume est minime —
+6 715 caractères pour les six vidéos. Seule la fonction `synthese()` est à
+remplacer.
 
 ## Outils
 
@@ -209,7 +248,8 @@ corrompu (moyenne 242/255, toute l'image vire au violet).
 | `build_media_images.py` | photos de la médiathèque depuis `docs/images/new/` |
 | `build_images.py` | images éditoriales depuis les captures vidéo |
 | `tools/make_lut.py` | génère la LUT 3D de resaturation des bleus |
-| `tools/encode_videos.sh` | applique la LUT et réencode les six vidéos |
+| `tools/encode_videos.sh` | applique la LUT et réencode les six vidéos dans `build/video/` |
+| `tools/voix_off.py` | textes de la voix off, synthèse, mixage et sous-titres |
 
 Les LUT (`tools/lut/*.cube`, 1 Mo chacune) ne sont pas versionnées : elles se
 régénèrent avec `make_lut.py`.
@@ -232,7 +272,7 @@ Puis ouvrir <http://127.0.0.1:8788>.
 │   ├── css/style.css        feuille de style unique
 │   ├── js/main.js           menu, apparitions, visionneuse, formulaire
 │   ├── img/                 photos, logo, affiches
-│   └── video/               six séquences réencodées
+│   └── video/               six séquences commentées + sous-titres
 ├── functions/
 │   ├── api/inscription.js   réception et enregistrement des demandes
 │   └── admin/demandes.js    page de consultation protégée

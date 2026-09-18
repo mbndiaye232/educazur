@@ -17,3 +17,7 @@ tools/lut/
 # Etat local de Wrangler (base D1 locale, cache)
 .wrangler/
 node_modules/
+
+# Videos etalonnees sans voix : intermediaire de tools/voix_off.py
+build/
+__pycache__/

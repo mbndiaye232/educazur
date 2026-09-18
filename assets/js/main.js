@@ -146,7 +146,9 @@
     });
   }
 
-  /* --- Formulaire (envoi via Web3Forms, sans rechargement de page) ------- */
+  /* --- Formulaire : envoi vers /api/inscription, sans rechargement -------
+     La route est une Cloudflare Pages Function qui écrit dans la base D1 du
+     projet. Aucun service externe n'est appelé. */
   var form = document.querySelector('form[data-ajax-form]');
 
   if (form) {
@@ -160,33 +162,38 @@
       status.className = 'form-status is-visible ' + (ok ? 'is-ok' : 'is-error');
     };
 
+    var messages = {
+      base_absente: 'Le formulaire n’est pas encore relié à sa base de données. '
+        + 'En attendant, appelez le 77 657 42 31 — nous répondons directement.',
+      trop_d_envois: 'Vous avez envoyé plusieurs demandes coup sur coup. '
+        + 'Patientez quelques minutes, ou appelez le 77 657 42 31.',
+      champs_invalides: 'Certains champs n’ont pas été acceptés. '
+        + 'Vérifiez votre nom, votre téléphone et le niveau choisi.'
+    };
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
       if (!form.reportValidity()) { return; }
 
-      var key = form.querySelector('input[name="access_key"]');
-
-      if (!key || !key.value || key.value.indexOf('VOTRE_CLE') === 0) {
-        say('Le formulaire n’est pas encore relié à sa boîte de réception. '
-          + 'En attendant, appelez le 77 657 42 31 — nous répondons directement.', false);
-        return;
-      }
-
       if (submit) { submit.disabled = true; submit.textContent = 'Envoi en cours…'; }
 
-      fetch('https://api.web3forms.com/submit', {
+      fetch('/api/inscription', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(Object.fromEntries(new FormData(form)))
       })
-        .then(function (r) { return r.json(); })
+        .then(function (r) {
+          return r.json().catch(function () { return {}; });
+        })
         .then(function (data) {
-          if (data.success) {
+          if (data && data.ok) {
             form.reset();
-            say('Merci, votre demande est bien arrivée. Le secrétariat vous rappelle sous 48 heures ouvrées.', true);
+            say('Merci, votre demande est bien enregistrée. '
+              + 'Le secrétariat vous rappelle sous 48 heures ouvrées.', true);
           } else {
-            say('L’envoi a échoué. Merci d’appeler le 77 657 42 31.', false);
+            say(messages[data && data.code]
+              || 'L’envoi a échoué. Merci d’appeler le 77 657 42 31.', false);
           }
         })
         .catch(function () {

@@ -14,6 +14,7 @@ Aucun framework, aucune étape de build : ce sont des fichiers HTML, CSS et JS s
 | `mediatheque.html` | Photos, six séquences vidéo, affiches et résultats officiels |
 | `inscriptions.html` | Modalités, formulaire de demande, coordonnées et accès |
 | `404.html` | Page d'erreur |
+| `/admin/demandes` | Consultation des demandes d'inscription (mot de passe) |
 
 ## Coordonnées
 
@@ -47,21 +48,93 @@ Remplacer `https://educazur.pages.dev` par le domaine définitif dans :
 - `sitemap.xml` ;
 - `robots.txt`.
 
-## Formulaire de contact
+## Formulaire d'inscription
 
-Le site étant statique, le formulaire de `inscriptions.html` passe par
-[Web3Forms](https://web3forms.com) (gratuit, sans compte : la clé arrive par e-mail).
+Le site est statique, mais les demandes ne passent par **aucun service externe** :
+elles sont reçues par une *Cloudflare Pages Function* et écrites dans une base
+**D1** du même projet. Les données ne quittent pas votre infrastructure.
 
-1. Sur web3forms.com, saisir l'adresse e-mail qui doit recevoir les demandes.
-2. Récupérer la clé d'accès dans l'e-mail de confirmation.
-3. Dans `inscriptions.html`, remplacer `VOTRE_CLE_WEB3FORMS` :
-
-```html
-<input type="hidden" name="access_key" value="VOTRE_CLE_WEB3FORMS">
+```
+Navigateur du visiteur ──POST /api/inscription──▶ Pages Function ──▶ base D1
+                                                                        │
+                            /admin/demandes (mot de passe) ◀────────────┘
 ```
 
-Tant que la clé n'est pas renseignée, le formulaire affiche un message invitant à
-appeler le secrétariat — il n'échoue pas silencieusement.
+| Fichier | Rôle |
+|---|---|
+| `functions/api/inscription.js` | reçoit le POST, valide, bride les envois répétés, enregistre |
+| `functions/admin/demandes.js` | page de consultation protégée par mot de passe |
+| `schema.sql` | table `demandes` |
+
+### Mise en service
+
+**1. Créer la base et sa table**
+
+```bash
+npx wrangler d1 create educazur-demandes
+npx wrangler d1 execute educazur-demandes --remote --file=schema.sql
+```
+
+Reporter le `database_id` renvoyé dans `wrangler.toml`.
+
+**2. Attacher la base au projet Pages**
+
+Tableau de bord Cloudflare → le projet → *Settings* → *Bindings* → *Add* →
+*D1 database binding*, nom de variable **`DB`**, puis redéployer.
+
+**3. Définir les secrets**
+
+*Settings* → *Variables and Secrets* :
+
+| Nom | Type | Rôle |
+|---|---|---|
+| `ADMIN_USER` | variable | identifiant de la page de consultation |
+| `ADMIN_PASSWORD` | secret | mot de passe de la page de consultation |
+| `IP_SALT` | secret | sel de l'empreinte d'adresse IP (une chaîne aléatoire) |
+
+**4. Consulter les demandes**
+
+<https://educazur.pages.dev/admin/demandes> — le navigateur demande
+l'identifiant et le mot de passe. Filtre « À traiter » par défaut, bouton
+« Marquer traitée » sur chaque ligne.
+
+Tant que la base n'est pas attachée, le formulaire n'échoue pas en silence : il
+affiche un message invitant à appeler le 77 657 42 31.
+
+### Protections
+
+- **Piège anti-robot** : un champ masqué qu'un humain ne remplit jamais.
+- **Bride anti-répétition** : 5 envois maximum par tranche de 10 minutes et par
+  origine. L'adresse IP n'est jamais stockée, seule une empreinte SHA-256
+  tronquée l'est, salée par `IP_SALT`.
+- **Page de consultation** : authentification HTTP Basic vérifiée côté serveur,
+  comparaison à temps constant, `noindex` et exclusion dans `robots.txt`.
+- **Échappement** : tout ce qui vient de la base est échappé avant affichage.
+  Vérifié avec des charges d'injection : 0 élément `<script>` créé, 0 attribut
+  `on*`, aucune boîte de dialogue déclenchée.
+
+### Développement local
+
+```bash
+npx wrangler d1 execute educazur-demandes --local --file=schema.sql
+npx wrangler pages dev . --port 8789
+```
+
+Les secrets locaux vont dans `.dev.vars` (non versionné) :
+
+```
+ADMIN_USER=secretariat
+ADMIN_PASSWORD=un-mot-de-passe
+IP_SALT=une-chaine-aleatoire
+```
+
+### Si vous voulez une notification par e-mail
+
+Ce n'est pas possible aujourd'hui sans réintroduire un tiers : l'envoi d'e-mail
+depuis Cloudflare exige un **domaine d'expédition vérifié**, ce qu'un
+sous-domaine `pages.dev` ne permet pas, et l'offre gratuite de MailChannels pour
+Workers s'est arrêtée en août 2024. Dès que l'école disposera de son propre
+domaine, la notification pourra être ajoutée à `functions/api/inscription.js`.
 
 ## Images
 
@@ -193,12 +266,18 @@ Puis ouvrir <http://127.0.0.1:8788>.
 
 ```
 .
-├── index.html, notre-ecole.html, resultats.html,
-│   cadre-de-vie.html, inscriptions.html, 404.html
+├── index.html, notre-ecole.html, resultats.html, cadre-de-vie.html,
+│   mediatheque.html, inscriptions.html, 404.html
 ├── assets/
 │   ├── css/style.css        feuille de style unique
 │   ├── js/main.js           menu, apparitions, visionneuse, formulaire
-│   └── img/                 photos, logo, affiche
+│   ├── img/                 photos, logo, affiches
+│   └── video/               six séquences commentées + sous-titres
+├── functions/
+│   ├── api/inscription.js   réception et enregistrement des demandes
+│   └── admin/demandes.js    page de consultation protégée
+├── schema.sql               table D1 des demandes
+├── wrangler.toml            liaison D1
 ├── docs/                    sources : textes du reportage, images d'origine
 ├── _headers                 en-têtes Cloudflare Pages
 ├── favicon.ico

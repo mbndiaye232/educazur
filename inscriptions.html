@@ -160,12 +160,9 @@
             Remplissez ce formulaire : le secrétariat vous rappelle sous 48 heures ouvrées.
           </p>
 
+          <!-- Envoyé vers /api/inscription, une Cloudflare Pages Function qui
+               écrit dans la base D1 du projet. Aucun service externe. -->
           <form data-ajax-form novalidate>
-            <!-- Clé d'accès Web3Forms : à remplacer par la clé reçue par e-mail
-                 lors de la création du formulaire sur https://web3forms.com -->
-            <input type="hidden" name="access_key" value="VOTRE_CLE_WEB3FORMS">
-            <input type="hidden" name="subject" value="Site Educazur — nouvelle demande d'inscription">
-            <input type="hidden" name="from_name" value="Site Groupe Scolaire Educazur">
             <input type="checkbox" name="botcheck" class="sr-only" tabindex="-1" aria-hidden="true">
 
             <div class="field-row">
@@ -215,8 +212,11 @@
             <p class="form-status" role="status" aria-live="polite"></p>
 
             <p class="form-note">
-              Les informations transmises servent uniquement à traiter votre demande
-              d'inscription. Elles ne sont ni revendues ni utilisées à d'autres fins.
+              Votre demande est enregistrée sur nos propres serveurs et n'est
+              transmise à aucun service extérieur. Elle sert uniquement à traiter
+              votre inscription : elle n'est ni revendue, ni utilisée à d'autres
+              fins. Pour la faire supprimer, appelez le 77&nbsp;657&nbsp;42&nbsp;31
+              ou écrivez à <a href="mailto:gs.educazur@yahoo.fr">gs.educazur@yahoo.fr</a>.
             </p>
           </form>
         </div>

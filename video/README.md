@@ -39,6 +39,9 @@ apparaissent pendant la phrase qui les cite, chaque phrase est sous-titrée.
   classe, ces deux plans viennent des photos du site (`assets/img/`).
 - **Polices** : Newsreader et Inter, embarquées via `@fontsource` (le rendu ne
   dépend pas de Google Fonts).
+- **Écran final** : coordonnées avec les libellés fournis par l'école (site web,
+  e-mail, mobiles, fixe) et adresse à Diamaguène SICAP Mbao ; il reste affiché
+  7 s après la dernière phrase, le temps de noter un numéro.
 
 ## Licence de la voix
 

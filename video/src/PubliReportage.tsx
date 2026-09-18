@@ -27,6 +27,14 @@ const SANS = '"Inter", "Segoe UI", Arial, sans-serif';
 
 const FONDU = 18;          // durée d'un fondu enchaîné entre deux plans (images)
 
+// Coordonnées de l'écran final, avec les libellés fournis par l'école.
+const CONTACTS: [string, string][] = [
+  ['Site web', 'https://educazur.net'],
+  ['Email', 'gs.educazur@yahoo.fr'],
+  ['Mobiles', '77 657 42 31 · 76 699 47 94'],
+  ['Fixe', '33 834 77 80'],
+];
+
 type Ligne = {
   texte: string;
   audio: string;
@@ -233,7 +241,7 @@ const Ouverture: React.FC<{ duree: number }> = ({ duree }) => {
           letterSpacing: '0.2em', textTransform: 'uppercase', color: OR,
         }}
       >
-        Groupe Scolaire Educazur · Pikine
+        Groupe Scolaire Educazur · Diamaguène SICAP Mbao
       </div>
     </AbsoluteFill>
   );
@@ -259,37 +267,61 @@ const Final: React.FC = () => {
         background: `radial-gradient(ellipse at 50% 35%, #114289 0%, ${NAVY} 45%, ${NAVY_FONCE} 100%)`,
       }}
     >
-      <Img src={staticFile('img/logo.png')} style={{ width: 200, height: 200, transform: `scale(${a})` }} />
+      <Img src={staticFile('img/logo.png')} style={{ width: 160, height: 160, transform: `scale(${a})` }} />
       <div
         style={{
-          marginTop: 36, opacity: a, fontFamily: SERIF, fontWeight: 500, fontSize: 96,
-          color: 'white', letterSpacing: '-0.01em',
+          marginTop: 26, opacity: a, fontFamily: SERIF, fontWeight: 500, fontSize: 88,
+          color: 'white', letterSpacing: '-0.01em', lineHeight: 1.1,
         }}
       >
         Groupe Scolaire Educazur
       </div>
-      <div style={{ marginTop: 6, opacity: b, fontFamily: SERIF, fontStyle: 'italic', fontSize: 58, color: OR }}>
+      <div style={{ marginTop: 6, opacity: b, fontFamily: SERIF, fontStyle: 'italic', fontSize: 54, color: OR }}>
         L’excellence est notre credo
       </div>
       <div
         style={{
-          marginTop: 54, opacity: c, transform: `scale(${0.9 + 0.1 * c})`,
-          background: ROUGE, color: 'white', borderRadius: 999, padding: '20px 46px',
-          fontFamily: SANS, fontWeight: 700, fontSize: 34,
+          marginTop: 40, opacity: c, transform: `scale(${0.9 + 0.1 * c})`,
+          background: ROUGE, color: 'white', borderRadius: 999, padding: '18px 44px',
+          fontFamily: SANS, fontWeight: 700, fontSize: 32,
         }}
       >
         Rentrée scolaire 2027 — Les inscriptions sont ouvertes
       </div>
+
+      {/* coordonnées, dans l'ordre et avec les libellés fournis par l'école */}
       <div
         style={{
-          marginTop: 40, opacity: d, fontFamily: SANS, fontWeight: 600, fontSize: 32,
-          color: 'rgba(255,255,255,.88)', letterSpacing: '0.02em',
+          marginTop: 44, display: 'grid', gridTemplateColumns: 'auto auto',
+          columnGap: 90, rowGap: 22, textAlign: 'left',
         }}
       >
-        77 657 42 31 · 76 699 47 94 · 33 834 77 80
+        {CONTACTS.map(([libelle, valeur], i) => {
+          const e = apparait(rentree.debut + rentree.duree + i * 0.35);
+          return (
+            <div key={libelle} style={{ opacity: e, transform: `translateY(${(1 - e) * 14}px)` }}>
+              <div
+                style={{
+                  fontFamily: SANS, fontWeight: 700, fontSize: 20, letterSpacing: '0.16em',
+                  textTransform: 'uppercase', color: OR,
+                }}
+              >
+                {libelle}
+              </div>
+              <div style={{ marginTop: 4, fontFamily: SANS, fontWeight: 600, fontSize: 34, color: 'white' }}>
+                {valeur}
+              </div>
+            </div>
+          );
+        })}
       </div>
-      <div style={{ marginTop: 12, opacity: d, fontFamily: SANS, fontWeight: 500, fontSize: 26, color: 'rgba(255,255,255,.6)' }}>
-        Km 16, Route de Rufisque — Pikine · educazur.pages.dev
+      <div
+        style={{
+          marginTop: 30, opacity: d, fontFamily: SANS, fontWeight: 500, fontSize: 26,
+          color: 'rgba(255,255,255,.65)',
+        }}
+      >
+        Km 16, Route de Rufisque (Nationale 1) — Diamaguène SICAP Mbao, Dakar
       </div>
     </AbsoluteFill>
   );

@@ -9,7 +9,7 @@ départ de chaque segment). Le script :
   5. écrit les sous-titres WebVTT correspondants.
 
 Usage, depuis la racine du dépôt :
-    python tools/voix_off.py            # les six vidéos
+    python tools/voix_off.py            # toutes les vidéos
     python tools/voix_off.py couloirs   # une seule
 
 Prérequis : pip install edge-tts ; ffmpeg dans le PATH ou FFMPEG=...
@@ -186,6 +186,24 @@ VIDEOS = {
     "allees-du-jardin": [
         (0.3, "Les allées du jardin mènent au préau, cœur de la vie scolaire. "
               "Educazur : un environnement digne des ambitions de votre enfant."),
+    ],
+    # Prises du 18/09/2026, montées par tools/encode_videos.sh (plans ratés retirés)
+    "salle-informatique": [
+        (0.4, "Voici la salle informatique d'Educazur. Parce que l'école de demain "
+              "est ouverte au numérique, Educazur accorde une place importante aux "
+              "outils technologiques."),
+    ],
+    "infirmerie": [
+        (0.4, "Parce que le bien-être de l'élève est au cœur de nos préoccupations, "
+              "Educazur dispose d'une infirmerie entièrement rénovée."),
+        (8.3, "Lits de repos, table d'examen, bureau : tout est pensé pour accueillir "
+              "et soigner les élèves dans de bonnes conditions."),
+        (14.8, f"Votre enfant est entre de bonnes mains. Appelez le {TEL}."),
+    ],
+    "bibliotheque": [
+        (0.4, "Bienvenue à la bibliothèque d'Educazur, entièrement rénovée."),
+        (4.4, "Un espace de lecture, de recherche et d'enrichissement intellectuel, "
+              "où les travaux des élèves sont à l'honneur."),
     ],
 }
 

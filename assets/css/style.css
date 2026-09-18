@@ -1049,6 +1049,33 @@ body.no-scroll { overflow: hidden; }
 .tag--mute { background: var(--sand); border-color: var(--sand-200); color: var(--ink-600); }
 .tag svg { width: 13px; height: 13px; }
 
+/* --- Vidéo en vedette (publi-reportage) -------------------------------- */
+.video-vedette__cadre { max-width: 1040px; margin-inline: auto; }
+
+.video-vedette {
+  margin: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #06152f;
+  box-shadow: var(--shadow-lg);
+}
+
+.video-vedette video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #06152f;
+}
+
+.video-vedette figcaption {
+  padding: .85rem 1.2rem;
+  font-size: .85rem;
+  font-weight: 500;
+  letter-spacing: .02em;
+  color: rgba(255, 255, 255, .72);
+  background: #06152f;
+}
+
 /* --- Médiathèque : documents ------------------------------------------- */
 .docs {
   display: grid;
